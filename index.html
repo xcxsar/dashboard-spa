@@ -1,10 +1,26 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>dashboard-spa</title>
+    <title>CloudOps · Monitoreo de infraestructura</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
+    <script>
+      // Aplica el tema elegido manualmente antes del primer pintado (sin parpadeo).
+      // Sin elección guardada, las variables siguen a prefers-color-scheme.
+      try {
+        const theme = localStorage.getItem('dashboard-theme')
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme
+      } catch {
+        // Almacenamiento no disponible: se usa el tema del sistema
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

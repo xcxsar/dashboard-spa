@@ -1,16 +1,36 @@
-# React + Vite
+# CloudOps · Dashboard SPA
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Panel de control responsivo para monitorear servidores e instancias cloud. Muestra métricas, permite configurar servicios desde un drawer y ejecutar acciones críticas con confirmación segura. Hecho con React + Vite, sin dependencias de UI.
 
-Currently, two official plugins are available:
+## Scripts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev      # servidor de desarrollo
+npm run build    # build de producción
+npm run lint     # oxlint
+```
 
-## React Compiler
+## Arquitectura
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Mobile-first**: estilos base para móvil, con `@media (min-width: 768px)` para tableta y `1024px` para escritorio.
+- **CSS Grid** para el layout macro (`src/styles/layout.css`) y para la vista de métricas en **Bento Grid**. **Flexbox** para los componentes de una dirección.
+- **Tres zonas**:
+  1. **Navegación**: header fijo y sidebar persistente o retráctil.
+  2. **Contenido dinámico**: KPIs, gráficas y tabla con filtros y paginación.
+  3. **Interacción**: drawer de configuración y modal de confirmación.
+- **Estados** Default, Hover, Focus, Disabled y Loading en botones y campos.
+- **Modo oscuro** con variables CSS, `prefers-color-scheme` y un toggle manual.
 
-## Expanding the Oxlint configuration
+```
+src/
+  styles/        tokens, base, layout y componentes
+  data/          datos simulados (de los prototipos de Figma)
+  hooks/         rutas por hash, tema, media queries, foco, notificaciones
+  components/    layout (Zona 1), ui, overlays (Zona 3), tabla y alertas
+  views/         Vista general, Instancias, Alertas, Detalle
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Documentación
+
+- [Reporte](docs/reporte.md): las 5 dimensiones del Diseño de Interacción y capturas de cada control en sus estados Default, Hover, Focus, Disabled y Loading, en modo claro y oscuro.

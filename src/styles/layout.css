@@ -1,0 +1,288 @@
+/*
+ * Layout mobile-first. Las reglas base son para móvil y se amplían
+ * con media queries de min-width: 768px (tableta) y 1024px (escritorio).
+ */
+
+/* ---------- Grid macro de la aplicación ---------- */
+.app {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'header'
+    'main';
+  min-height: 100dvh;
+}
+
+/* ---------- Zona 1 · Header fijo (Flexbox) ---------- */
+.header {
+  grid-area: header;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 64px;
+  padding: 10px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header .search,
+.header .live {
+  display: none;
+}
+
+/* ---------- Zona 1 · Sidebar (retráctil en móvil/tablet) ---------- */
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: min(300px, 85vw);
+  padding: 16px 16px 24px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  transform: translateX(-100%);
+  visibility: hidden;
+  transition:
+    transform var(--dur-slow) var(--ease-out),
+    visibility 0s linear var(--dur-slow);
+}
+
+.sidebar.is-open {
+  transform: none;
+  visibility: visible;
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: var(--scrim);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    visibility 0s linear var(--dur-base);
+}
+
+.scrim.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar-scrim {
+  z-index: 45;
+}
+
+/* ---------- Zona 2 · Contenido dinámico ---------- */
+.main {
+  grid-area: main;
+  min-width: 0;
+  padding: 16px 16px 32px;
+}
+
+.main:focus {
+  outline: none;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.page-titles {
+  display: flex;
+  flex: 1 1 260px;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.page-subtitle {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.toolbar .grow {
+  flex: 1 1 220px;
+}
+
+/* ---------- Bento Grid de la vista de métricas ---------- */
+.bento {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas:
+    'k1 k2'
+    'k3 k4'
+    'chart chart'
+    'table table'
+    'alerts alerts'
+    'region region';
+}
+
+.bento-k1 { grid-area: k1; }
+.bento-k2 { grid-area: k2; }
+.bento-k3 { grid-area: k3; }
+.bento-k4 { grid-area: k4; }
+.bento-chart { grid-area: chart; }
+.bento-region { grid-area: region; }
+.bento-alerts { grid-area: alerts; }
+.bento-table { grid-area: table; }
+
+/* KPIs del detalle: 2 × 2 en móvil, 4 en una fila desde tableta */
+.kpi-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.alert-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* ---------- Tableta ---------- */
+@media (min-width: 768px) {
+  .header {
+    gap: 16px;
+    padding: 12px 24px;
+  }
+
+  .header .search,
+  .header .live {
+    display: flex;
+  }
+
+  .main {
+    padding: 24px 24px 40px;
+  }
+
+  .page {
+    gap: 20px;
+  }
+
+  .page-header .page-live {
+    display: none;
+  }
+
+  .bento {
+    gap: 16px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-areas:
+      'k1 k2 k3 k4'
+      'chart chart chart chart'
+      'region region alerts alerts'
+      'table table table table';
+  }
+
+  .kpi-grid {
+    gap: 16px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .alert-grid {
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Escritorio: sidebar persistente, 2 columnas ---------- */
+@media (min-width: 1024px) {
+  .app {
+    grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+    grid-template-areas:
+      'sidebar header'
+      'sidebar main';
+  }
+
+  .sidebar {
+    grid-area: sidebar;
+    position: sticky;
+    top: 0;
+    z-index: auto;
+    width: auto;
+    height: 100dvh;
+    padding: 20px 16px;
+    box-shadow: none;
+    transform: none;
+    visibility: visible;
+    transition: none;
+  }
+
+  .app .sidebar-scrim,
+  .app .sidebar-close,
+  .app .menu-button {
+    display: none;
+  }
+
+  .header {
+    padding: 12px 28px;
+  }
+
+  .main {
+    padding: 28px 28px 48px;
+  }
+
+  .bento {
+    grid-template-areas:
+      'k1 k2 k3 k4'
+      'chart chart region region'
+      'chart chart alerts alerts'
+      'table table table table';
+  }
+}
+
+/* Al abrir, la visibilidad cambia de inmediato (el foco puede entrar);
+ * al cerrar, espera a que termine la animación. */
+.sidebar.is-open,
+.scrim.is-visible,
+.drawer.is-open {
+  transition-delay: 0s;
+}
